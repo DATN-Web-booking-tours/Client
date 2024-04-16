@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import HomePage from '@/pages/Home-page.tsx';
+// import {Provider} from "react-redux"
+// import {store} from "@/lib/redux/store" 
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,7 +17,11 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage/>
-      }
+      },
+      // {
+      //   path: "/Profile",
+      //   element: <Profile/>
+      // }
     ]
   },
 ]);
@@ -23,6 +29,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/* <App /> */}
+    {/* <Provider store={store}> */}
+
     <RouterProvider router={router}></RouterProvider>
+    {/* </Provider> */}
   </React.StrictMode>,
 )
