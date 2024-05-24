@@ -1,0 +1,40 @@
+@use "@/styles/abstracts" as *;
+.searchTour {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  .search__form {
+    display: flex;
+    padding: 24px 0px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+  .search__filter {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  .select__form .ant-select-selector {
+    border-color: #79747e;
+  }
+  .select__form .ant-select-selector:hover {
+    border-color: #79747e;
+  }
+}
+.item__tourInfo {
+  text-align: right;
+}
+.text__tour {
+  @include txtCustom(16px, 500, #353535);
+}
+.itemRow__tourInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.containerRow__itemTour {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 4px;
+}
