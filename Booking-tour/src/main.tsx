@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import HomePage from "@/pages/Home-page.tsx";
-import HistoryPage from "@/pages/History-page.tsx";
-import WeatherPage from "@/pages/Weather-page.tsx";
+import Profile from "@/pages/Profile-page.tsx";
 import BookingPage from "@/pages/Booking-page.tsx";
 import SignInPage from "./components/SignIn.tsx";
 import SignUpPage from "./components/SignUp.tsx";
@@ -62,12 +61,8 @@ const router = createBrowserRouter([
         element: <LocationInfoPage />,
       },
       {
-        path: "history",
-        element: <HistoryPage />,
-      },
-      {
-        path: "weather",
-        element: <WeatherPage />,
+        path: "profile",
+        element: <Profile />,
       },
       {
         path: "booking",

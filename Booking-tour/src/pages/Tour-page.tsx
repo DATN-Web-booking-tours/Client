@@ -17,6 +17,7 @@ import {
   SearchOutlined,
   DollarTwoTone,
   HomeFilled,
+  ClockCircleFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 interface OptionType {
@@ -24,6 +25,7 @@ interface OptionType {
   value: string;
 }
 interface dataTourType {
+  status: string;
   activity: string;
   date: string;
   price: string;
@@ -48,6 +50,7 @@ const TourPage = () => {
   ];
   const tourBestData: dataTourType[] = [
     {
+      status: "Chưa bắt đầu",
       typeRest: "Hotel",
       description:
         "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
@@ -58,6 +61,8 @@ const TourPage = () => {
       img: "https://ik.imagekit.io/tvlk/image/imageResource/2019/03/13/1552466374013-a57dacdbc92a9c508c1dbc4c4ceeb5cd.jpeg?tr=dpr-2,q-75,w-320",
     },
     {
+      status: "Chưa bắt đầu",
+
       typeRest: "Lều",
       description:
         "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
@@ -68,6 +73,7 @@ const TourPage = () => {
       img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851600794-f02453e5e7d6bc0533503519b44bd817.png?tr=dpr-2,q-75,w-320",
     },
     {
+      status: "Đã kết thúc",
       typeRest: "Resort",
       description:
         "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
@@ -78,6 +84,52 @@ const TourPage = () => {
       img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851894841-e5d7f8e7abc30ff0f1f07f6d7a64eac1.png?tr=dpr-2,q-75,w-320",
     },
     {
+      status: "Đã kết thúc",
+      typeRest: "Hotel",
+      description:
+        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
+      activity: "Cắm trại",
+      date: "Oct 10,2024",
+      price: "700,000",
+      location: "Hà Nội",
+      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
+    },
+    {
+      status: "Chưa bắt đầu",
+
+      typeRest: "Hotel",
+      description:
+        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
+      activity: "Cắm trại",
+      date: "Oct 10,2024",
+      price: "700,000",
+      location: "Hà Nội",
+      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
+    },
+    {
+      status: "Đã hủy",
+      typeRest: "Hotel",
+      description:
+        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
+      activity: "Cắm trại",
+      date: "Oct 10,2024",
+      price: "700,000",
+      location: "Hà Nội",
+      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
+    },
+    {
+      status: "Chưa bắt đầu",
+      typeRest: "Hotel",
+      description:
+        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
+      activity: "Cắm trại",
+      date: "Oct 10,2024",
+      price: "700,000",
+      location: "Hà Nội",
+      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
+    },
+    {
+      status: "Đã kết thúc",
       typeRest: "Hotel",
       description:
         "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
@@ -187,7 +239,7 @@ const TourPage = () => {
               bordered
               size="large"
               pagination={{
-                pageSize: 3,
+                pageSize: 8,
               }}
               dataSource={tourBestData}
               renderItem={(item, key) => (
@@ -248,7 +300,20 @@ const TourPage = () => {
                         {item.activity}
                       </Link>
                     }
-                    description={item.description}
+                    description={
+                      <>
+                        <Row>{item.description}</Row>
+                        <Row style={{ paddingTop: "16px" }}>
+                          <ClockCircleFilled />
+                          <span className="list__itemTour-date">
+                            {item.date}
+                          </span>
+                          <Tag color="#7BBCB0" style={{ marginRight: 0 }}>
+                            {item.status}
+                          </Tag>
+                        </Row>
+                      </>
+                    }
                   />
                 </List.Item>
               )}

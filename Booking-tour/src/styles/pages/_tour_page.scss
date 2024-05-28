@@ -38,3 +38,8 @@
   gap: 4px;
   margin-bottom: 4px;
 }
+.list__itemTour-date {
+  padding: 0 16px;
+  @include txtCustom(16px, 500, #383838);
+  line-height: 16px;
+}

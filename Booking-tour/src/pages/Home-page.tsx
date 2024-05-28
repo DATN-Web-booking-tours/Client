@@ -8,7 +8,6 @@ import {
   Row,
   Col,
   Card,
-  FloatButton,
   Divider,
   Tag,
 } from "antd";
@@ -17,7 +16,6 @@ import {
   CalendarFilled,
   SearchOutlined,
   RightCircleOutlined,
-  MessageTwoTone,
   DollarTwoTone,
 } from "@ant-design/icons";
 import sunnyIcon from "@/assets/sunny.png";
@@ -459,14 +457,6 @@ export default function HomePage() {
           ))}
         </Row>
       </div>
-      <FloatButton
-        shape="circle"
-        type="primary"
-        badge={{ count: 1 }}
-        tooltip={<div>Chat Bot</div>}
-        style={{ right: 94, bottom: 200 }}
-        icon={<MessageTwoTone />}
-      />
     </>
   );
 }
