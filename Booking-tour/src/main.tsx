@@ -4,8 +4,8 @@ import App from "./App.tsx";
 import HomePage from "@/pages/Home-page.tsx";
 import Profile from "@/pages/Profile-page.tsx";
 import BookingPage from "@/pages/Booking-page.tsx";
-import SignInPage from "./components/SignIn.tsx";
-import SignUpPage from "./components/SignUp.tsx";
+import SignInPage from "./components/shared/SignIn.tsx";
+import SignUpPage from "./components/shared/SignUp.tsx";
 import LocationInfoPage from "./pages/LocationInfo-page.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // import {Provider} from "react-redux"
