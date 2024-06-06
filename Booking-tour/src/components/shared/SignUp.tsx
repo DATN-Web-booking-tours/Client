@@ -1,6 +1,6 @@
 import logoWeb from "@/assets/LogoWeb.png";
 import { Col, Row, Form, Input, DatePicker, Select, Button } from "antd";
-import validationRulesInstance from "@/components/validated/Rule";
+import validationRulesInstance from "@/lib/validated/Rule";
 import { SendOutlined } from "@ant-design/icons";
 
 interface Option {

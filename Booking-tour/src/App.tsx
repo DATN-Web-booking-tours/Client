@@ -12,10 +12,12 @@ function App() {
         </div>
       </div>
       <div className="container">
-        <div className="row margin-header">
-          <Outlet />
+        <div className="container__body">
+          <div className="row fix-height">
+            <Outlet />
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
       <FloatButton
         shape="circle"

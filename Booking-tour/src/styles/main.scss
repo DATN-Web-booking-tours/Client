@@ -7,3 +7,14 @@
 .margin-header {
   margin-top: $heighHeader + 3px;
 }
+
+.fix-height {
+  flex: 1;
+}
+
+.container__body {
+  display: flex;
+  flex-direction: column;
+  padding-top: $heighHeader + 3px;
+  min-height: 100vh;
+}

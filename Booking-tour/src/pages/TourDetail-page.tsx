@@ -5,6 +5,7 @@ import Img3 from "@/assets/3.jpg";
 import Img4 from "@/assets/4.jpg";
 import Img5 from "@/assets/5.jpg";
 import Img6 from "@/assets/6.jpg";
+import { RedirectVNPay } from "@/lib/api/payment-api";
 import {
   EnvironmentFilled,
   DollarOutlined,
@@ -14,7 +15,7 @@ import {
   UserOutlined,
   HomeOutlined
 } from "@ant-design/icons";
-import validationRulesInstance from "@/components/validated/Rule";
+import validationRulesInstance from "@/lib/validated/Rule";
 import dayjs from "dayjs";
 
 interface imgType {
@@ -60,6 +61,16 @@ const TourDetailPage = () => {
       title: 'Hướng dẫn viên nhiệt tình',
     },
   ];
+
+  const handleBooking = async (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    event.preventDefault();
+    await RedirectVNPay()
+      .then(url => {
+        console.log(url);
+        localStorage.setItem('GoWebapp_PaymentUrl', url);
+        window.open(url, '_blank')
+      })
+  }
   return <div className="TourDetail__container">
     <Row className="TourDetail__title">
       <Col span={16}><span className="TourDetail__title-item">Tour Du Lịch Hội An</span></Col>
@@ -302,6 +313,7 @@ const TourDetailPage = () => {
               size="large"
               icon={<DollarOutlined />}
               style={{ backgroundColor: "#01b7f2", width: "100%" }}
+              onClick={(e) => handleBooking(e)}
             >
               <span className="form__action-title">Thanh Toán</span>
             </Button>
