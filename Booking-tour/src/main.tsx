@@ -7,6 +7,9 @@ import BookingPage from "@/pages/Booking-page.tsx";
 import SignInPage from "./components/shared/SignIn.tsx";
 import SignUpPage from "./components/shared/SignUp.tsx";
 import LocationInfoPage from "./pages/LocationInfo-page.tsx";
+import TourOwnerPage from "./pages/TourOwner-page.tsx";
+import StatisticAdminPage from "./pages/StatisticAdmin-page.tsx";
+import StatisticOwnerAdmin from "./pages/StatisticOwnerAdmin.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // import {Provider} from "react-redux"
 // import {store} from "@/lib/redux/store"
@@ -55,6 +58,18 @@ const router = createBrowserRouter([
       {
         path: "tour/:id",
         element: <TourDetailPage />,
+      },
+      {
+        path: "tourowner",
+        element: <TourOwnerPage />,
+      },
+      {
+        path: "statistic",
+        element: <StatisticAdminPage />,
+      },
+      {
+        path: "statisticowner",
+        element: <StatisticOwnerAdmin />,
       },
       {
         path: "home/:id",

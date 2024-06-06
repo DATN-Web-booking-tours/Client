@@ -1,5 +1,5 @@
 import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
-import validationRulesInstance from "@/components/validated/Rule";
+import validationRulesInstance from "@/lib/validated/Rule";
 import { Avatar } from "antd";
 import { SkinFilled, SaveOutlined } from "@ant-design/icons";
 interface Option {
@@ -17,7 +17,7 @@ export default function Profile() {
       <div className="item__profile">
         <div className="item__profile-avt">
           <Avatar
-            size={{ xxl: 150 }}
+            size={{ xs: 150, sm: 150, md: 150, lg: 150, xl: 150, xxl: 150 }}
             src="https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498"
           />
         </div>
