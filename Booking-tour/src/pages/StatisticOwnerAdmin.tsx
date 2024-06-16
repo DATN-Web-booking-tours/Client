@@ -59,7 +59,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "1",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Trần Trung Hiếu",
             phone: "92839212",
             email: "hieupro987074@gmail.com",
@@ -71,8 +71,7 @@ const StatisticOwnerAdmin = () => {
         },
         {
             key: "2",
-
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Nguyễn Văn An",
             phone: "12345678",
             email: "an.nguyen@gmail.com",
@@ -84,7 +83,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "3",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Lê Thị Mai",
             phone: "87654321",
             email: "mai.le@gmail.com",
@@ -96,7 +95,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "4",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Phạm Thị Hoa",
             phone: "11223344",
             email: "hoa.pham@gmail.com",
@@ -108,7 +107,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "5",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Trần Văn Bình",
             phone: "55667788",
             email: "binh.tran@gmail.com",
@@ -120,7 +119,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "6",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Nguyễn Thị Hạnh",
             phone: "66778899",
             email: "hanh.nguyen@gmail.com",
@@ -132,7 +131,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "7",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Hoàng Văn Nam",
             phone: "99887766",
             email: "nam.hoang@gmail.com",
@@ -144,7 +143,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "8",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Đỗ Thị Lan",
             phone: "33445566",
             email: "lan.do@gmail.com",
@@ -156,7 +155,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "9",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Trương Văn Tâm",
             phone: "22113344",
             email: "tam.truong@gmail.com",
@@ -168,7 +167,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "10",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Bùi Thị Minh",
             phone: "77889900",
             email: "minh.bui@gmail.com",
@@ -180,7 +179,7 @@ const StatisticOwnerAdmin = () => {
         {
             key: "11",
 
-            avt: "https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498",
+            avt: "https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98",
             name: "Vũ Thị Hà",
             phone: "44332211",
             email: "ha.vu@gmail.com",
@@ -412,7 +411,7 @@ const StatisticOwnerAdmin = () => {
                     <div className="user__profile-avt">
                         <Avatar
                             size={{ xs: 150, sm: 150, md: 150, lg: 150, xl: 150, xxl: 150 }}
-                            src="https://scontent.fsgn2-3.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=GbGyntddSokQ7kNvgH72wpj&_nc_ht=scontent.fsgn2-3.fna&oh=00_AYBwycwtcZo1foqIxawptm7QEYZs546YxJAMHDh9Vw6lzw&oe=665C9498"
+                            src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-1/368021133_1726419231151489_6853635133763153961_n.jpg?stp=dst-jpg_p200x200&_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHXc4Y4B9SC2Fny3yA8N-CUBC9cMpZD2bwEL1wylkPZvD4bJYKXx2IP8953lqBULM1Rvddh6Q3aEhnBc6AwmJmM&_nc_ohc=FhhQ7a3Mz3IQ7kNvgFUOeLv&_nc_ht=scontent.fdad2-1.fna&oh=00_AYCrNRtt1XiljSQI4A_Ak0GXouMm_vLvTroAbWs6sEUXCg&oe=666FEA98"
                         />
                     </div>
                     <div className="user__profile-name">Trần Trung Hiếu</div>

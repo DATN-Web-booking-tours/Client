@@ -1,9 +1,6 @@
 import panelImg from "@/assets/panel.jpg";
 import {
-  Input,
-  Form,
-  DatePicker,
-  Select,
+  // DatePicker,
   Button,
   Row,
   Col,
@@ -12,15 +9,11 @@ import {
   Tag,
 } from "antd";
 import {
-  EnvironmentFilled,
-  CalendarFilled,
-  SearchOutlined,
   RightCircleOutlined,
   DollarTwoTone,
 } from "@ant-design/icons";
 import sunnyIcon from "@/assets/sunny.png";
 import { Link } from "react-router-dom";
-
 import rain from "@/assets/rain.png";
 interface weatherType {
   date: string;
@@ -29,10 +22,10 @@ interface weatherType {
   temperature: string;
   iconWeather: string;
 }
-interface OptionType {
-  label: string;
-  value: string;
-}
+// interface OptionType {
+//   label: string;
+//   value: string;
+// }
 interface dataTourType {
   activity: string;
   date: string;
@@ -46,13 +39,13 @@ interface dataLocationType {
   location: string;
 }
 export default function HomePage() {
-  const { RangePicker } = DatePicker;
-  const activity: OptionType[] = [
-    { label: "Tham quan", value: "Visit" },
-    { label: "Leo núi", value: "RockClimbing" },
-    { label: "Cắm trại", value: "Camping" },
-    { label: "Nghỉ dưỡng", value: "GoOnHoliday" },
-  ];
+  // const { RangePicker } = DatePicker;
+  // const activity: OptionType[] = [
+  //   { label: "Tham quan", value: "Visit" },
+  //   { label: "Leo núi", value: "RockClimbing" },
+  //   { label: "Cắm trại", value: "Camping" },
+  //   { label: "Nghỉ dưỡng", value: "GoOnHoliday" },
+  // ];
   const weather: weatherType[] = [
     {
       date: "Mar 6",
@@ -212,7 +205,7 @@ export default function HomePage() {
     <>
       <div className="Panel">
         <img src={panelImg} alt="Img Introduction" className="Panel__img" />
-        <div className="search">
+        {/* <div className="search">
           <div className="search__title">TÌM KIẾM CHUYẾN ĐI THÍCH HỢP</div>
           <Form name="SearchForm" autoComplete="off" className="search__form">
             <Form.Item noStyle name="location">
@@ -261,7 +254,7 @@ export default function HomePage() {
               </Button>
             </Form.Item>
           </Form>
-        </div>
+        </div> */}
       </div>
       <div className="homeContent">
         <Row className="listCard">
