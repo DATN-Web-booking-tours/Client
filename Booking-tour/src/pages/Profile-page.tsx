@@ -10,7 +10,7 @@ interface Option {
   value: boolean;
   label: string;
 }
-interface UserData {
+export interface UserData {
   name: string;
   phoneNumber: string;
   email: string;
