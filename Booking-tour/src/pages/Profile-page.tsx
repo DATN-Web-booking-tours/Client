@@ -24,7 +24,7 @@ export default function Profile() {
   const [userProfile, setUserProfile] = useState<UserData>();
   const [isFormChanged, setIsFormChanged] = useState(false);
   const [user,] = useUserContext();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
   useEffect(() => {
     const fetchDataUser = () => {
       setLoading(true);
@@ -50,20 +50,21 @@ export default function Profile() {
   };
 
   const handleFormSubmit = (values: UserData) => {
+    setLoading(true)
     if (values.birthday && dayjs.isDayjs(values.birthday)) {
       values.birthday = values.birthday.format("YYYY/MM/DD");
     }
     values.avatar = userProfile?.avatar || ""
-    console.log(values);
     EditProfile(values)
       .then((res) => {
         if (!res.succeeded) {
-          message.error('Submit failed!');
-          console.log(res.messages[0]);
+          message.error('Chỉnh sửa thất bại!');
+          setLoading(false)
         }
         else {
-          message.success('Submit success!');
+          setLoading(false)
           setUserProfile(values);
+          message.success('Chỉnh sửa thành công!');
           setIsFormChanged(false);
         }
       })

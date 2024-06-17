@@ -19,12 +19,10 @@ const navItemTourOwner: NavItem[] = [
   { href: "home", label: "Trang chủ" },
   { href: "profile", label: "Hồ Sơ" },
   { href: "tourowner", label: "Quản lý tour" },
-  { href: "tour", label: "Tour" },
 ];
 const navItemAdmin: NavItem[] = [
   { href: "home", label: "Trang chủ" },
   { href: "profile", label: "Hồ Sơ" },
-  { href: "tour", label: "Tour" },
   { href: "statisticuser", label: "Thống kê Customer" },
   { href: "statistictourowner", label: "Thống kê TourOwner" },
 ];

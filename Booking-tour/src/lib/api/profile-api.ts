@@ -17,6 +17,7 @@ export const GetProfile = async () => {
 };
 export const EditProfile = async (formData: UserData) => {
   const formDataProfile = new FormData();
+  console.log(formData);
   Object.entries(formData).forEach(([key, value]) => {
     formDataProfile.append(key, value);
   });
@@ -24,7 +25,12 @@ export const EditProfile = async (formData: UserData) => {
   try {
     const response = await axiosClient.put(
       `${import.meta.env.VITE_BACKEND}/api/v1/user/profile`,
-      formDataProfile
+      formDataProfile,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     if (!response.data) {
       throw new Error("Edit Profile Failed");
