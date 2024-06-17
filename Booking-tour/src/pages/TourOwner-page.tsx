@@ -184,9 +184,9 @@ const TourOwnerPage = () => {
             title: "Trạng thái",
             dataIndex: "status",
             key: "status",
-            render: (status: OptionStateTour) => (
+            render: (status: number) => (
                 <Tag color="#FF5500">
-                    {status.value}
+                    {status}
                 </Tag>),
             ellipsis: true,
         },
