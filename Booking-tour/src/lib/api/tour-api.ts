@@ -75,10 +75,12 @@ export const AddTour = async (formData: TourData) => {
     return null;
   }
 };
-export const GetAllTourByTourOwner = async () => {
+export const GetAllTourByTourOwner = async (current: number = 1) => {
   try {
     const response = await axiosClient.get(
-      `${import.meta.env.VITE_BACKEND}/api/v1/tour/tour-owner`
+      `${
+        import.meta.env.VITE_BACKEND
+      }/api/v1/tour/tour-owner/?curentPage=${current}`
     );
     if (!response.data) {
       throw new Error("Tour not found in response data");

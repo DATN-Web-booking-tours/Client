@@ -6,10 +6,8 @@ import {
     DatePicker,
     Table,
     TableColumnsType,
-    TableProps,
     Avatar,
     Tag,
-    Popconfirm,
     Modal,
     Row,
     Col,
@@ -25,7 +23,6 @@ import {
     EnvironmentFilled,
     CalendarFilled,
     SearchOutlined,
-    DeleteFilled,
     EditFilled,
     PlusOutlined,
     CloseOutlined,
@@ -37,7 +34,7 @@ import { useEffect, useState } from "react";
 import ImgEmpty from "@/components/icon/iconEmpty";
 
 import { Image, Upload } from 'antd';
-import type { UploadProps } from 'antd';
+import type { PaginationProps, UploadProps } from 'antd';
 import dayjs from "dayjs";
 import { UploadImage } from "@/lib/api/image-api";
 import { AddTour, GetAllTourByTourOwner } from "@/lib/api/tour-api";
@@ -83,12 +80,14 @@ export interface TourData {
     schedules: schedulesItem[];
     images: filePathItem[];
 }
-type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
+// type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
 const TourOwnerPage = () => {
     const { RangePicker } = DatePicker;
     const [formEdit] = Form.useForm();
     const [open, setOpen] = useState(false);
     const [loadingUploadFile, setLoadingUploadFile] = useState<boolean>(false)
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+    const [current, setCurrent] = useState<number>(1);
     const [loadingData, setLoadingData] = useState<boolean>(false)
     const listStateTour: OptionStateTour[] = [
         { value: 0, label: "Đang Chuẩn Bị" },
@@ -131,15 +130,30 @@ const TourOwnerPage = () => {
                 .then((res) => {
                     if (!res.succeeded) {
                         message.error('Thêm thất bại!');
-                        setOpen(false)
-                        setFileListUrl([])
-                    }
-                    else {
+                        setOpen(false);
+                        setFileListUrl([]);
+                    } else {
                         message.success('Thêm thành công!');
                         setOpen(false);
-                        setFileListUrl([])
+                        setFileListUrl([]);
+                        setLoadingData(true);
+
+                        // Call GetAllTourByTourOwner after AddTour is successful
+                        return GetAllTourByTourOwner();
                     }
                 })
+                .then((res) => {
+                    if (res && res.succeeded) {
+                        setDataSource(res.data);
+                        setTotalRecords(res.totalCount);
+                    }
+                    setLoadingData(false);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    message.error('Có lỗi xảy ra khi thêm tour!');
+                    setLoadingData(false);
+                });
         });
     };
     const showModal = () => {
@@ -150,13 +164,12 @@ const TourOwnerPage = () => {
         setFileListUrl([])
     };
     const [dataSource, setDataSource] = useState<DataType[]>([]);
-    const handleChange: OnChange = (pagination, filters, sorter) => {
+    // const handleChange: OnChange = (pagination, filters, sorter) => {
 
-    };
-    const handleDelete = (id: string) => {
-        const newData = dataSource.filter((item) => item.id !== id);
-        setDataSource(newData);
-    };
+    // };
+    const onPageChange: PaginationProps["onChange"] = (page) => {
+        setCurrent(page)
+    }
 
     const columns: TableColumnsType<DataType> = [
         {
@@ -186,7 +199,7 @@ const TourOwnerPage = () => {
             key: "status",
             render: (status: number) => (
                 <Tag color="#FF5500">
-                    {status}
+                    {listStateTour[status].label}
                 </Tag>),
             ellipsis: true,
         },
@@ -202,7 +215,7 @@ const TourOwnerPage = () => {
             key: "price",
             render: (price: number) => (
                 <Tag color="#2DB7F5">
-                    {price}
+                    {price} VNĐ
                 </Tag>),
             ellipsis: true,
         },
@@ -226,10 +239,6 @@ const TourOwnerPage = () => {
                     <div className="action__table">
                         <Button icon={<EditFilled />} type="text" onClick={showModal}>
                         </Button>
-                        <Popconfirm title="Xác nhận xóa!" onConfirm={() => handleDelete(id)}>
-                            <Button icon={<DeleteFilled />} type="text">
-                            </Button>
-                        </Popconfirm>
                     </div>
                 ) : null,
         },
@@ -262,14 +271,15 @@ const TourOwnerPage = () => {
     );
     useEffect(() => {
         setLoadingData(true)
-        GetAllTourByTourOwner()
+        GetAllTourByTourOwner(current)
             .then((res) => {
                 if (res.succeeded) {
                     setDataSource(res.data)
+                    setTotalRecords(res.totalCount)
                     setLoadingData(false)
                 }
             })
-    }, [])
+    }, [current])
     return (
         <div className="tourOwner__container">
             <Form
@@ -374,10 +384,11 @@ const TourOwnerPage = () => {
                     <Table
                         columns={columns}
                         dataSource={dataSource}
-                        onChange={handleChange}
                         loading={loadingData}
                         pagination={{
-                            showSizeChanger: true,
+                            onChange: onPageChange,
+                            total: totalRecords,
+                            current: current,
                         }}
                         locale={{
                             emptyText: () => (
