@@ -1,3 +1,4 @@
+import axios from "axios";
 import { axiosClient } from "./config/axios-client";
 interface schedulesItem {
   startTime: string;
@@ -20,6 +21,18 @@ export interface TourData {
   hotel: string;
   schedules: schedulesItem[];
   images: filePathItem[];
+}
+interface TourOder {
+  name: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  participants: number;
+  totalPrice: number;
+  tourId: string;
+  paymentMethod: string;
+  amount: number;
+  note: string;
 }
 export const AddTour = async (formData: TourData) => {
   const formDataTour = new FormData();
@@ -75,13 +88,113 @@ export const AddTour = async (formData: TourData) => {
     return null;
   }
 };
-export const GetAllTourByTourOwner = async (current: number = 1) => {
+export const GetAllTourByTourOwner = async (
+  current: number = 1,
+  Keyword?: string,
+  startDate?: string,
+  endDate?: string
+) => {
   try {
-    const response = await axiosClient.get(
-      `${
-        import.meta.env.VITE_BACKEND
-      }/api/v1/tour/tour-owner/?curentPage=${current}`
+    let url = `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/tour/tour-owner/?currentPage=${current}`;
+    if (Keyword) {
+      url += `&Keyword=${Keyword}`;
+    }
+    if (startDate) {
+      url += `&startDate=${startDate}`;
+    }
+    if (endDate) {
+      url += `&endDate=${endDate}`;
+    }
+    const response = await axiosClient.get(url);
+    if (!response.data) {
+      throw new Error("Tour not found in response data");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Get Tour failed: ", error);
+    return null;
+  }
+};
+
+export const GetTourHome = async (OrderBy: boolean = false) => {
+  try {
+    let url = `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/tour?pageSize=4&isExport=false`;
+    if (OrderBy) {
+      url += `&OrderBy=Price`;
+    }
+    const response = await axios.get(url);
+    if (!response.data) {
+      throw new Error("Tour not found in response data");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Get Tour failed: ", error);
+    return null;
+  }
+};
+export const GetTourById = async (id: string) => {
+  try {
+    const url = `${import.meta.env.VITE_BACKEND}/api/v1/tour/${id}`;
+    const response = await axios.get(url);
+    if (!response.data) {
+      throw new Error("Tour not found in response data");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Get Tour failed: ", error);
+    return null;
+  }
+};
+export const AddTourOder = async (formData: TourOder) => {
+  const formTourOrder = new FormData();
+  console.log(formData);
+  Object.entries(formData).forEach(([key, value]) => {
+    formTourOrder.append(key, value);
+  });
+  try {
+    const response = await axiosClient.post(
+      `${import.meta.env.VITE_BACKEND}/api/v1/order`,
+      formTourOrder,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
+    if (!response.data) {
+      throw new Error("Edit Profile Failed");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Edit Profile Failed: ", error);
+    return null;
+  }
+};
+
+export const GetAllByAll = async (
+  current: number = 1,
+  Keyword?: string,
+  startDate?: string,
+  endDate?: string
+) => {
+  try {
+    let url = `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/tour/?currentPage=${current}`;
+    if (Keyword) {
+      url += `&Keyword=${Keyword}`;
+    }
+    if (startDate) {
+      url += `&startDate=${startDate}`;
+    }
+    if (endDate) {
+      url += `&endDate=${endDate}`;
+    }
+    const response = await axios.get(url);
     if (!response.data) {
       throw new Error("Tour not found in response data");
     }

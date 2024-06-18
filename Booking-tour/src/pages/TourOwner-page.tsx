@@ -38,6 +38,7 @@ import type { PaginationProps, UploadProps } from 'antd';
 import dayjs from "dayjs";
 import { UploadImage } from "@/lib/api/image-api";
 import { AddTour, GetAllTourByTourOwner } from "@/lib/api/tour-api";
+import { GetStatisticOwner } from "@/lib/api/statistic-api";
 interface OptionStateTour {
     value: number;
     label: string;
@@ -57,6 +58,12 @@ interface DataType {
     endDate: string;
     image: fileData;
     createdAt?: string;
+}
+interface Statistic {
+    turnover: number;
+    amountTourCreated: number;
+    amountTourEnd: number;
+    participants: number;
 }
 interface schedulesItem {
     startTime: string;
@@ -82,19 +89,46 @@ export interface TourData {
 }
 // type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
 const TourOwnerPage = () => {
-    const { RangePicker } = DatePicker;
     const [formEdit] = Form.useForm();
+    const [formSearch] = Form.useForm();
     const [open, setOpen] = useState(false);
     const [loadingUploadFile, setLoadingUploadFile] = useState<boolean>(false)
     const [totalRecords, setTotalRecords] = useState<number>(0);
     const [current, setCurrent] = useState<number>(1);
     const [loadingData, setLoadingData] = useState<boolean>(false)
+    const [searchKeyWord, setSearchKeyWord] = useState<string>();
+    const [searchStartDate, setSearchStartDate] = useState<string>();
+    const [searchEndDate, setSearchEndDate] = useState<string>();
+    const [dataStatistic, setDataStatistic] = useState<Statistic>();
+
     const listStateTour: OptionStateTour[] = [
         { value: 0, label: "Đang Chuẩn Bị" },
         { value: 1, label: "Đang tiến hành" },
         { value: 2, label: "Đã kết thúc" },
 
     ];
+    const handleFormSearch = () => {
+        formSearch.validateFields().then((value) => {
+            if (value.startDate && dayjs.isDayjs(value.startDate)) {
+                value.startDate = value.startDate.format("YYYY/MM/DD");
+            }
+            if (value.endDate && dayjs.isDayjs(value.endDate)) {
+                value.endDate = value.endDate.format("YYYY/MM/DD");
+            }
+            setSearchKeyWord(value.Keyword)
+            setSearchStartDate(value.startDate)
+            setSearchEndDate(value.endDate)
+            setLoadingData(true)
+            GetAllTourByTourOwner(1, value.Keyword, value.startDate, value.endDate)
+                .then((res) => {
+                    if (res.succeeded) {
+                        setDataSource(res.data)
+                        setLoadingData(false)
+                        setTotalRecords(res.totalCount)
+                    }
+                })
+        });
+    };
     const handleFormSubmit = () => {
         console.log(filelistUrl);
         formEdit.validateFields().then((value) => {
@@ -137,8 +171,6 @@ const TourOwnerPage = () => {
                         setOpen(false);
                         setFileListUrl([]);
                         setLoadingData(true);
-
-                        // Call GetAllTourByTourOwner after AddTour is successful
                         return GetAllTourByTourOwner();
                     }
                 })
@@ -148,6 +180,12 @@ const TourOwnerPage = () => {
                         setTotalRecords(res.totalCount);
                     }
                     setLoadingData(false);
+                    return GetStatisticOwner();
+                })
+                .then((res) => {
+                    if (res && res.succeeded) {
+                        setDataStatistic(res.data)
+                    }
                 })
                 .catch((error) => {
                     console.error(error);
@@ -164,9 +202,7 @@ const TourOwnerPage = () => {
         setFileListUrl([])
     };
     const [dataSource, setDataSource] = useState<DataType[]>([]);
-    // const handleChange: OnChange = (pagination, filters, sorter) => {
 
-    // };
     const onPageChange: PaginationProps["onChange"] = (page) => {
         setCurrent(page)
     }
@@ -271,7 +307,7 @@ const TourOwnerPage = () => {
     );
     useEffect(() => {
         setLoadingData(true)
-        GetAllTourByTourOwner(current)
+        GetAllTourByTourOwner(current, searchKeyWord, searchStartDate, searchEndDate)
             .then((res) => {
                 if (res.succeeded) {
                     setDataSource(res.data)
@@ -280,20 +316,30 @@ const TourOwnerPage = () => {
                 }
             })
     }, [current])
+    useEffect(() => {
+        GetStatisticOwner()
+            .then((res) => {
+                if (res.succeeded) {
+                    setDataStatistic(res.data)
+                }
+            })
+    }, [])
     return (
         <div className="tourOwner__container">
             <Form
                 name="searchForm"
+                form={formSearch}
                 autoComplete="off"
                 className="searchTour__form"
                 layout="vertical"
+                onFinish={handleFormSearch}
             >
                 <Row className="statistic__owner" >
                     <Col span={6} className="statistic__owner-item">
                         <Card >
                             <Statistic
                                 title="Doanh thu"
-                                value={1232323}
+                                value={dataStatistic?.turnover}
                                 valueStyle={{ color: '#3f8600' }}
                                 prefix={<DollarOutlined />}
                                 suffix="VNĐ"
@@ -304,7 +350,7 @@ const TourOwnerPage = () => {
                         <Card>
                             <Statistic
                                 title="Số Tour đã tạo"
-                                value={124}
+                                value={dataStatistic?.amountTourCreated}
                                 valueStyle={{ color: '#cf1322' }}
                                 prefix={<SendOutlined />}
                                 suffix="Tour"
@@ -315,7 +361,7 @@ const TourOwnerPage = () => {
                         <Card >
                             <Statistic
                                 title="Số Tour đã kết thúc"
-                                value={32}
+                                value={dataStatistic?.amountTourEnd}
                                 valueStyle={{ color: '#cf1322' }}
                                 prefix={<SendOutlined />}
                                 suffix="Tour"
@@ -326,7 +372,7 @@ const TourOwnerPage = () => {
                         <Card>
                             <Statistic
                                 title="Số người tham gia"
-                                value={300}
+                                value={dataStatistic?.participants}
                                 valueStyle={{ color: '#01B7F2' }}
                                 prefix={<UserOutlined />}
                                 suffix="Người"
@@ -335,10 +381,10 @@ const TourOwnerPage = () => {
                     </Col>
                 </Row>
                 <div className="search__form-owner">
-                    <Form.Item noStyle name="location">
+                    <Form.Item noStyle name="Keyword">
                         <Input
                             size="large"
-                            placeholder="Nhập địa điểm du lịch"
+                            placeholder="Nhập tên,địa điểm du lịch"
                             prefix={<EnvironmentFilled />}
                             style={{
                                 borderColor: "#79747E",
@@ -347,20 +393,36 @@ const TourOwnerPage = () => {
                             }}
                         />
                     </Form.Item>
-                    <Form.Item noStyle name="duration">
-                        <RangePicker
+                    <Form.Item noStyle name="startDate">
+                        <DatePicker
                             suffixIcon={<CalendarFilled style={{ color: "#112211" }} />}
+                            placeholder="Nhập ngày bắt đầu"
                             size="large"
                             style={{
                                 borderColor: "#79747E",
                                 maxWidth: "300px",
                                 minWidth: "200px",
                             }}
+                            format={"YYYY/MM/DD"}
                         />
                     </Form.Item>
-                    <Form.Item noStyle name="search">
+                    <Form.Item noStyle name="endDate">
+                        <DatePicker
+                            suffixIcon={<CalendarFilled style={{ color: "#112211" }} />}
+                            placeholder="Nhập ngày kết thúc"
+                            size="large"
+                            style={{
+                                borderColor: "#79747E",
+                                maxWidth: "300px",
+                                minWidth: "200px",
+                            }}
+                            format={"YYYY/MM/DD"}
+                        />
+                    </Form.Item>
+                    <Form.Item noStyle>
                         <Button
                             type="primary"
+                            htmlType="submit"
                             size="large"
                             icon={<SearchOutlined />}
                             style={{ backgroundColor: "#01b7f2" }}
@@ -368,7 +430,7 @@ const TourOwnerPage = () => {
                             Tìm kiếm
                         </Button>
                     </Form.Item>
-                    <Form.Item noStyle name="add">
+                    <Form.Item noStyle >
                         <Button
                             type="primary"
                             size="large"

@@ -39,6 +39,8 @@ export default function Profile() {
               birthday: dayjs(res.data.birthday, "YYYY/MM/DD")
             };
             setUserProfile(profileData)
+            console.log(profileData);
+
             setLoading(false)
           }
         })

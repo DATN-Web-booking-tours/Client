@@ -7,6 +7,7 @@ import {
   Card,
   Divider,
   Tag,
+  Spin,
 } from "antd";
 import {
   RightCircleOutlined,
@@ -15,6 +16,9 @@ import {
 import sunnyIcon from "@/assets/sunny.png";
 import { Link } from "react-router-dom";
 import rain from "@/assets/rain.png";
+import { useEffect, useState } from "react";
+import { GetTourHome } from "@/lib/api/tour-api";
+import dayjs from "dayjs";
 interface weatherType {
   date: string;
   wednesday: string;
@@ -22,30 +26,32 @@ interface weatherType {
   temperature: string;
   iconWeather: string;
 }
-// interface OptionType {
-//   label: string;
-//   value: string;
-// }
-interface dataTourType {
-  activity: string;
-  date: string;
-  price: string;
-  location: string;
-  img: string;
-}
 interface dataLocationType {
   id: string;
   img: string;
   location: string;
 }
+
+interface filePathItem {
+  filePath: string;
+  fileUrl: string;
+}
+export interface TourData {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  location: string;
+  startDate: string;
+  status: number;
+  hotel: string;
+  image: filePathItem;
+}
 export default function HomePage() {
-  // const { RangePicker } = DatePicker;
-  // const activity: OptionType[] = [
-  //   { label: "Tham quan", value: "Visit" },
-  //   { label: "Leo núi", value: "RockClimbing" },
-  //   { label: "Cắm trại", value: "Camping" },
-  //   { label: "Nghỉ dưỡng", value: "GoOnHoliday" },
-  // ];
+  const [tourMoney, setTourMoney] = useState<TourData[]>();
+  const [tourNormal, setTourNomarl] = useState<TourData[]>();
+  const [loadingMoney, setLoadingMoney] = useState<boolean>(false);
+  const [loadingNormal, setLoadingNormal] = useState<boolean>(false);
   const weather: weatherType[] = [
     {
       date: "Mar 6",
@@ -97,66 +103,6 @@ export default function HomePage() {
       iconWeather: sunnyIcon,
     },
   ];
-  const tourBestData: dataTourType[] = [
-    {
-      activity: "Tham Quan",
-      date: "July 05,2024",
-      price: "500,000",
-      location: "Hồ Chí Minh",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2019/03/13/1552466374013-a57dacdbc92a9c508c1dbc4c4ceeb5cd.jpeg?tr=dpr-2,q-75,w-320",
-    },
-    {
-      activity: "Leo núi",
-      date: "Jun 21,2024",
-      price: "1,200,000",
-      location: "Nha Trang",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851600794-f02453e5e7d6bc0533503519b44bd817.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      activity: "Nghỉ dưỡng",
-      date: "May 20,2024",
-      price: "300,000",
-      location: "Đà Nẵng",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851894841-e5d7f8e7abc30ff0f1f07f6d7a64eac1.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
-    },
-  ];
-  const tourMoneyData: dataTourType[] = [
-    {
-      activity: "Tham Quan",
-      date: "July 05,2024",
-      price: "500,000",
-      location: "Hồ Chí Minh",
-      img: "https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/7369264504118/The-Amazing-Bay-Water-Park-Tickets-55729c6b-9ac2-42b2-b286-47eed560d9fa.png?_src=imagekit&tr=dpr-2,c-at_max,h-569,q-60,w-320",
-    },
-    {
-      activity: "Leo núi",
-      date: "Jun 21,2024",
-      price: "1,200,000",
-      location: "Nha Trang",
-      img: "https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000908873691/Sun-World-Ha-Long-Tickets-84caf9b9-5f23-4418-81b9-225d20debb84.jpeg?_src=imagekit&tr=dpr-2,c-at_max,h-569,q-60,w-320",
-    },
-    {
-      activity: "Nghỉ dưỡng",
-      date: "May 20,2024",
-      price: "300,000",
-      location: "Đà Nẵng",
-      img: "https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000684219858/VinWonders-Nha-Trang-Tickets--80b15ee9-1b00-482d-a01d-566adef9bc25.jpeg?_src=imagekit&tr=dpr-2,c-at_max,h-569,q-60,w-320",
-    },
-    {
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000908871772/Sun-World-Ba-Na-Hills-in-Da-Nang--ce8d864c-da07-4dc0-91db-f320fa9fbbeb.jpeg?_src=imagekit&tr=dpr-2,c-at_max,h-569,q-60,w-320",
-    },
-  ];
   const locationInfo: dataLocationType[] = [
     {
       id: "102",
@@ -201,60 +147,30 @@ export default function HomePage() {
       img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
     },
   ];
+  useEffect(() => {
+    setLoadingNormal(true)
+    GetTourHome()
+      .then((res) => {
+        if (res.succeeded) {
+          setTourNomarl(res.data)
+          setLoadingNormal(false)
+        }
+      })
+  }, [])
+  useEffect(() => {
+    setLoadingMoney(true)
+    GetTourHome(true)
+      .then((res) => {
+        if (res.succeeded) {
+          setTourMoney(res.data)
+          setLoadingMoney(false)
+        }
+      })
+  }, [])
   return (
     <>
       <div className="Panel">
         <img src={panelImg} alt="Img Introduction" className="Panel__img" />
-        {/* <div className="search">
-          <div className="search__title">TÌM KIẾM CHUYẾN ĐI THÍCH HỢP</div>
-          <Form name="SearchForm" autoComplete="off" className="search__form">
-            <Form.Item noStyle name="location">
-              <Input
-                size="large"
-                placeholder="Nhập địa điểm du lịch"
-                prefix={<EnvironmentFilled />}
-                style={{
-                  borderColor: "#79747E",
-                  maxWidth: "250px",
-                  minWidth: "200px",
-                }}
-              />
-            </Form.Item>
-            <Form.Item noStyle name="duration">
-              <RangePicker
-                suffixIcon={<CalendarFilled style={{ color: "#112211" }} />}
-                style={{
-                  borderColor: "#79747E",
-                  maxWidth: "300px",
-                  minWidth: "200px",
-                }}
-              />
-            </Form.Item>
-            <Form.Item noStyle name="activity">
-              <Select
-                size="large"
-                allowClear
-                options={activity}
-                placeholder="Chọn loại hình du lịch"
-                className="select__form"
-                style={{
-                  maxWidth: "300px",
-                  minWidth: "200px",
-                }}
-              />
-            </Form.Item>
-            <Form.Item noStyle name="activity">
-              <Button
-                type="primary"
-                size="large"
-                icon={<SearchOutlined />}
-                style={{ backgroundColor: "#01b7f2" }}
-              >
-                Tìm kiếm
-              </Button>
-            </Form.Item>
-          </Form>
-        </div> */}
       </div>
       <div className="homeContent">
         <Row className="listCard">
@@ -266,73 +182,77 @@ export default function HomePage() {
             className="listCard__title"
             style={{ textAlign: "end" }}
           >
-            <Button
-              type="primary"
-              size="large"
-              icon={<RightCircleOutlined />}
-              style={{ backgroundColor: "#01b7f2" }}
-            />
+            <Link to={"/tour"}>
+              <Button
+                type="primary"
+                size="large"
+                icon={<RightCircleOutlined />}
+                style={{ backgroundColor: "#01b7f2" }}
+              />
+            </Link>
           </Col>
         </Row>
-        <Row gutter={16}>
-          {tourBestData.map((data, key) => (
-            <Col span={6} key={key}>
-              <Card
-                hoverable
-                bordered={true}
-                cover={
-                  <img
-                    alt="imgTour"
-                    src={data.img}
-                    className="listCard__item"
-                  />
-                }
-                actions={[
-                  <Link to={`/tour/${123}`}>
-                    <Button
-                      type="primary"
-                      size="large"
-                      icon={<DollarTwoTone />}
-                      style={{ backgroundColor: "#01b7f2" }}
-                    >
-                      Xem thông tin
-                    </Button>
-                  </Link>,
-                ]}
-              >
-                <Row>
-                  <Col span={24}>
-                    <Tag color="#2db7f5" className="listCard__item-activity">
-                      Tham Quan
-                    </Tag>
-                    <Tag color="#f50" style={{ textAlign: "end" }}>
-                      VND {data.price}
-                    </Tag>
-                    <Divider style={{ margin: "5px 0px" }}></Divider>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>
-                    <div className="listCard__item-info">Ngày</div>
-                  </Col>
-                  <Col span={12} style={{ textAlign: "end" }}>
-                    <div className="listCard__item-info">Địa điểm</div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>
-                    <div className="listCard__item-content">{data.date}</div>
-                  </Col>
-                  <Col span={12} style={{ textAlign: "end" }}>
-                    <div className="listCard__item-content">
-                      {data.location}
-                    </div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <Spin spinning={loadingNormal}>
+          <Row gutter={16}>
+            {tourNormal?.map((data) => (
+              <Col span={6} key={data?.id}>
+                <Card
+                  hoverable
+                  bordered={true}
+                  cover={
+                    <img
+                      alt="imgTour"
+                      src={data?.image?.filePath}
+                      className="listCard__item"
+                    />
+                  }
+                  actions={[
+                    <Link to={`/tour/${data?.id}`}>
+                      <Button
+                        type="primary"
+                        size="large"
+                        icon={<DollarTwoTone />}
+                        style={{ backgroundColor: "#01b7f2" }}
+                      >
+                        Xem thông tin
+                      </Button>
+                    </Link>,
+                  ]}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Tag color="#2db7f5" className="listCard__item-activity">
+                        {data.name}
+                      </Tag>
+                      <Tag color="#f50" style={{ textAlign: "end" }}>
+                        VND {data?.price}
+                      </Tag>
+                      <Divider style={{ margin: "5px 0px" }}></Divider>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
+                      <div className="listCard__item-info">Ngày</div>
+                    </Col>
+                    <Col span={12} style={{ textAlign: "end" }}>
+                      <div className="listCard__item-info">Địa điểm</div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
+                      <div className="listCard__item-content"> {dayjs(data?.startDate).format('MMMM DD, YYYY')}</div>
+                    </Col>
+                    <Col span={12} style={{ textAlign: "end" }}>
+                      <div className="listCard__item-content">
+                        {data?.location}
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Spin>
         <Row className="listCard">
           <Col span={23} className="listCard__title">
             Top Tour Giá Rẻ
@@ -342,73 +262,77 @@ export default function HomePage() {
             className="listCard__title"
             style={{ textAlign: "end" }}
           >
-            <Button
-              type="primary"
-              size="large"
-              icon={<RightCircleOutlined />}
-              style={{ backgroundColor: "#01b7f2" }}
-            />
+            <Link to={"/tour"}>
+              <Button
+                type="primary"
+                size="large"
+                icon={<RightCircleOutlined />}
+                style={{ backgroundColor: "#01b7f2" }}
+              />
+            </Link>
           </Col>
         </Row>
-        <Row gutter={16}>
-          {tourMoneyData.map((data, key) => (
-            <Col span={6} key={key}>
-              <Card
-                hoverable
-                bordered={true}
-                cover={
-                  <img
-                    alt="imgTour"
-                    src={data.img}
-                    className="listCard__item"
-                  />
-                }
-                actions={[
-                  <Link to={`/tour/${123}`}>
-                    <Button
-                      type="primary"
-                      size="large"
-                      icon={<DollarTwoTone />}
-                      style={{ backgroundColor: "#01b7f2" }}
-                    >
-                      Xem thông tin
-                    </Button>
-                  </Link>,
-                ]}
-              >
-                <Row>
-                  <Col span={24}>
-                    <Tag color="#2db7f5" className="listCard__item-activity">
-                      Tham Quan
-                    </Tag>
-                    <Tag color="#f50" style={{ textAlign: "end" }}>
-                      VND {data.price}
-                    </Tag>
-                    <Divider style={{ margin: "5px 0px" }}></Divider>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>
-                    <div className="listCard__item-info">Ngày</div>
-                  </Col>
-                  <Col span={12} style={{ textAlign: "end" }}>
-                    <div className="listCard__item-info">Địa điểm</div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col span={12}>
-                    <div className="listCard__item-content">{data.date}</div>
-                  </Col>
-                  <Col span={12} style={{ textAlign: "end" }}>
-                    <div className="listCard__item-content">
-                      {data.location}
-                    </div>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <Spin spinning={loadingMoney}>
+          <Row gutter={16}>
+            {tourMoney?.map((data) => (
+              <Col span={6} key={data?.id}>
+                <Card
+                  hoverable
+                  bordered={true}
+                  cover={
+                    <img
+                      alt="imgTour"
+                      src={data?.image?.filePath}
+                      className="listCard__item"
+                    />
+                  }
+                  actions={[
+                    <Link to={`/tour/${data?.id}`}>
+                      <Button
+                        type="primary"
+                        size="large"
+                        icon={<DollarTwoTone />}
+                        style={{ backgroundColor: "#01b7f2" }}
+                      >
+                        Xem thông tin
+                      </Button>
+                    </Link>,
+                  ]}
+                >
+                  <Row>
+                    <Col span={24}>
+                      <Tag color="#2db7f5" className="listCard__item-activity">
+                        {data.name}
+                      </Tag>
+                      <Tag color="#f50" style={{ textAlign: "end" }}>
+                        VND {data?.price}
+                      </Tag>
+                      <Divider style={{ margin: "5px 0px" }}></Divider>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
+                      <div className="listCard__item-info">Ngày</div>
+                    </Col>
+                    <Col span={12} style={{ textAlign: "end" }}>
+                      <div className="listCard__item-info">Địa điểm</div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={12}>
+                      <div className="listCard__item-content"> {dayjs(data?.startDate).format('MMMM DD, YYYY')}</div>
+                    </Col>
+                    <Col span={12} style={{ textAlign: "end" }}>
+                      <div className="listCard__item-content">
+                        {data?.location}
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Spin>
         <Row className="listCard">
           <Col span={24} className="listCard__title">
             Thông Tin Về Địa Điểm
@@ -419,7 +343,7 @@ export default function HomePage() {
             <Col span={6} className="listCard__link" key={key}>
               <Link to={`/home/${data.id}`}>
                 <img
-                  src={data.img}
+                  src={data?.img}
                   alt="imgLocation"
                   className="listCard__item"
                   style={{

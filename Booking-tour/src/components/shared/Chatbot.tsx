@@ -3,40 +3,45 @@ import type { SearchProps } from 'antd/es/input/Search';
 import {
     SendOutlined
 } from "@ant-design/icons";
+import { useState } from 'react';
+import { GetAI } from '@/lib/api/chatbot-api';
 const Chatbot = () => {
     const { Search } = Input;
-    const onSearch: SearchProps['onSearch'] = (value, _e, info) => console.log(info?.source, value);
+    const [inputValue, setInputValue] = useState<string>('');
+    const [messages, setMessages] = useState<{ text: string, fromUser: boolean }[]>([]);
+    const onSearch: SearchProps['onSearch'] = (value) => {
+        setMessages(prevMessages => [...prevMessages, { text: value, fromUser: true }]);
+        GetAI(value)
+            .then((res) => {
+                if (res.ids == null) {
+                    const aiResponse = res.message;
+                    setMessages(prevMessages => [...prevMessages, { text: aiResponse, fromUser: false }]);
+                }
+                else {
+                    const aiResponse = `http://localhost:5173/tour/${res.ids[0]}`;
+                    setMessages(prevMessages => [...prevMessages, { text: aiResponse, fromUser: false }]);
+                }
+            })
+        setInputValue("")
+    };
     return (
         <div className="chatbot__container">
             <div className="chatbot__messages">
-                <Row className="chatbot__item" justify={"start"}>
-                    <Col className='item__message' style={{ backgroundColor: "rgb(123, 188, 176)" }}>Bạn có thể đặt câu hỏi cho tôi</Col>
-                </Row>
-                <Row className="chatbot__item" justify={"end"}>
-                    <Col className='item__message'>Thời tiết hôm nay thế nào </Col>
-                </Row>
-                <Row className="chatbot__item" justify={"start"}>
-                    <Col className='item__message' style={{ backgroundColor: "rgb(123, 188, 176)" }}>Bạn có thể đặt câu hỏi cho tôi</Col>
-                </Row>
-                <Row className="chatbot__item" justify={"end"}>
-                    <Col className='item__message'>Thời tiết hôm nay thế nào </Col>
-                </Row>
-                <Row className="chatbot__item" justify={"start"}>
-                    <Col className='item__message' style={{ backgroundColor: "rgb(123, 188, 176)" }}>Bạn có thể đặt câu hỏi cho tôi</Col>
-                </Row>
-                <Row className="chatbot__item" justify={"end"}>
-                    <Col className='item__message'>Thời tiết hôm nay thế nào </Col>
-                </Row>
-                <Row className="chatbot__item" justify={"start"}>
-                    <Col className='item__message' style={{ backgroundColor: "rgb(123, 188, 176)" }}>Bạn có thể đặt câu hỏi cho tôi</Col>
-                </Row>
-                <Row className="chatbot__item" justify={"end"}>
-                    <Col className='item__message'>Thời tiết hôm nay thế nào </Col>
-                </Row>
-
+                {messages.map((message, index) => (
+                    <Row key={index} className="chatbot__item" justify={`${message.fromUser ? 'end' : 'start'}`}>
+                        <Col className='item__message' style={{ backgroundColor: message.fromUser ? "" : "rgb(123, 188, 176)" }}>{message.text}</Col>
+                    </Row>
+                ))}
             </div>
             <div className="chatbot__input">
-                <Search placeholder="Nhập nội dung câu hỏi" size="large" onSearch={onSearch} enterButton={<SendOutlined />} />
+                <Search
+                    placeholder="Nhập nội dung câu hỏi"
+                    size="large"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onSearch={onSearch}
+                    enterButton={<SendOutlined />}
+                />
             </div>
         </div>
     )
