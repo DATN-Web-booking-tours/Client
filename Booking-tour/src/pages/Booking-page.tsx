@@ -68,6 +68,7 @@ const BookingPage = () => {
       GetAllBookingCustomer(1, value.Keyword, value.startDate, value.endDate)
         .then((res) => {
           if (res?.succeeded) {
+            setCurrent(1)
             setDataSource(res.data)
             setLoadingData(false)
             setTotalRecords(res.totalCount)
@@ -91,7 +92,7 @@ const BookingPage = () => {
           setLoadingData(false)
         }
       })
-  }, [current])
+  }, [])
   return (
     <div className="searchTour">
       <Form

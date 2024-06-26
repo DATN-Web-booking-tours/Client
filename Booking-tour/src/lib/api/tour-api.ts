@@ -34,6 +34,20 @@ interface TourOder {
   amount: number;
   note: string;
 }
+export interface TourUpdateData {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  lastRegisterDate: string;
+  vehicle: string;
+  hotel: string;
+  schedules: schedulesItem[];
+  images: filePathItem[];
+}
 export const AddTour = async (formData: TourData) => {
   const formDataTour = new FormData();
   for (const key in formData) {
@@ -201,6 +215,76 @@ export const GetAllByAll = async (
     return response.data;
   } catch (error) {
     console.warn("Get Tour failed: ", error);
+    return null;
+  }
+};
+
+export const EditTour = async (formData: TourUpdateData) => {
+  const formDataTour = new FormData();
+  for (const key in formData) {
+    if (Object.prototype.hasOwnProperty.call(formData, key)) {
+      const value = formData[key as keyof TourUpdateData];
+
+      if (Array.isArray(value)) {
+        value.forEach((item, index) => {
+          if (key === "schedules") {
+            const scheduleItem = item as schedulesItem;
+            formDataTour.append(
+              `${key}[${index}][startTime]`,
+              scheduleItem.startTime
+            );
+            formDataTour.append(
+              `${key}[${index}][Date]`,
+              scheduleItem.Date.toString()
+            );
+            formDataTour.append(
+              `${key}[${index}][Description]`,
+              scheduleItem.Description
+            );
+          } else if (key === "images") {
+            const imageItem = item as filePathItem;
+            formDataTour.append(
+              `${key}[${index}][FilePath]`,
+              imageItem.FilePath
+            );
+          }
+        });
+      } else {
+        formDataTour.append(key, value as string);
+      }
+    }
+  }
+  try {
+    const response = await axiosClient.put(
+      `${import.meta.env.VITE_BACKEND}/api/v1/tour`,
+      formDataTour,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    if (!response.data) {
+      throw new Error("Edit Tour Failed");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Edit Tour Failed: ", error);
+    return null;
+  }
+};
+export const GetListOrderByTour = async (id: string) => {
+  try {
+    const url = `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/order/tour?tourId=${id}`;
+    const response = await axiosClient.get(url);
+    if (!response.data) {
+      throw new Error("List Order not found in response data");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Get List Order failed: ", error);
     return null;
   }
 };

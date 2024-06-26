@@ -59,6 +59,7 @@ const SignIn = () => {
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 const credential = credentialResponse.credential ?? '';
+                localStorage.setItem("tokenGoogle", credential);
                 console.log(credentialResponse);
                 setLoading(true);
                 GetTokenUser(credential)
@@ -78,8 +79,6 @@ const SignIn = () => {
                       alert("Tài khoản đang chờ xét duyệt!")
                     }
                     else {
-                      // localStorage.setItem("tokenUser", res.data.token)
-                      // localStorage.setItem("role", res.data.role)
                       setUser({ token: res.data.token, role: res.data.role })
                       setLoading(false)
                       navigate("/home")

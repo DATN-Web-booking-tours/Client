@@ -1,9 +1,8 @@
-import { Col, Row, Form, Divider, Input, DatePicker, Button, Timeline, List, Avatar, Spin, message } from "antd";
+import { Col, Row, Form, Divider, Input, DatePicker, Button, Timeline, Spin } from "antd";
 import { RedirectVNPay } from "@/lib/api/payment-api";
 import {
   EnvironmentFilled,
   DollarOutlined,
-  CommentOutlined,
   WhatsAppOutlined,
   MailOutlined,
   UserOutlined,
@@ -15,10 +14,6 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AddTourOder, GetTourById } from "@/lib/api/tour-api";
 
-interface commentType {
-  name: string;
-  title: string;
-}
 
 
 interface filePathItem {
@@ -64,20 +59,6 @@ const TourDetailPage = () => {
   const [loadingDetail, setLoadingDetail] = useState<boolean>(false);
   const [formCheckOut] = Form.useForm();
   const [dataDetail, setDataDetail] = useState<TourDetailType>();
-  const data: commentType[] = [
-    {
-      name: "Trần Trung Hiếu",
-      title: 'Tour đi thích lắm ạ!',
-    },
-    {
-      name: "Phạm Khắc Luận",
-      title: 'Tour đi rất ổn, sẽ ủng hộ lâu dài',
-    },
-    {
-      name: "Lê Văn Hào",
-      title: 'Hướng dẫn viên nhiệt tình',
-    },
-  ];
   const { id } = useParams();
   useEffect(() => {
     const fetchDataTour = (id: string) => {
@@ -221,7 +202,7 @@ const TourDetailPage = () => {
             </Col>
           </Row>
           <Divider></Divider>
-          <Row className="item__description">
+          {/* <Row className="item__description">
             Đánh giá
           </Row>
           <Row className="item__comment">
@@ -240,7 +221,7 @@ const TourDetailPage = () => {
                 )}
               />
             </Col>
-          </Row>
+          </Row> */}
         </Col>
         <Col span={8} className="TourDetail__item-form">
           <Form

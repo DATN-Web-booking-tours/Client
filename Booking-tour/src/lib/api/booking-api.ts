@@ -29,3 +29,16 @@ export const GetAllBookingCustomer = async (
     return null;
   }
 };
+export const GetBookingById = async (id: string) => {
+  try {
+    const url = `${import.meta.env.VITE_BACKEND}/api/v1/order/${id}`;
+    const response = await axiosClient.get(url);
+    if (!response.data) {
+      throw new Error("Booking not found in response data");
+    }
+    return response.data;
+  } catch (error) {
+    console.warn("Get Booking failed: ", error);
+    return null;
+  }
+};

@@ -37,7 +37,7 @@ import { Image, Upload } from 'antd';
 import type { PaginationProps, UploadProps } from 'antd';
 import dayjs from "dayjs";
 import { UploadImage } from "@/lib/api/image-api";
-import { AddTour, GetAllTourByTourOwner } from "@/lib/api/tour-api";
+import { AddTour, EditTour, GetAllTourByTourOwner, GetListOrderByTour, GetTourById } from "@/lib/api/tour-api";
 import { GetStatisticOwner } from "@/lib/api/statistic-api";
 interface OptionStateTour {
     value: number;
@@ -87,11 +87,28 @@ export interface TourData {
     schedules: schedulesItem[];
     images: filePathItem[];
 }
-// type OnChange = NonNullable<TableProps<DataType>["onChange"]>;
+interface ListOrderData {
+    phoneNumber: string;
+    email: string;
+    totalPrice: number;
+    participants: number;
+    status: number;
+    createAt: string;
+    updateAt: null;
+}
+interface ScheduleDisplay {
+    id: string;
+    startTime: string;
+    date: number;
+    description: string;
+}
 const TourOwnerPage = () => {
     const [formEdit] = Form.useForm();
+    const [formUpdate] = Form.useForm();
     const [formSearch] = Form.useForm();
     const [open, setOpen] = useState(false);
+    const [openUpdate, setOpenUpdate] = useState(false);
+
     const [loadingUploadFile, setLoadingUploadFile] = useState<boolean>(false)
     const [totalRecords, setTotalRecords] = useState<number>(0);
     const [current, setCurrent] = useState<number>(1);
@@ -100,12 +117,15 @@ const TourOwnerPage = () => {
     const [searchStartDate, setSearchStartDate] = useState<string>();
     const [searchEndDate, setSearchEndDate] = useState<string>();
     const [dataStatistic, setDataStatistic] = useState<Statistic>();
+    const [dataSource, setDataSource] = useState<DataType[]>([]);
+    const [idTourEdit, setIdTourEdit] = useState<string>()
+    const [listDataOrder, setListDataOrder] = useState<ListOrderData[]>([]);
+
 
     const listStateTour: OptionStateTour[] = [
         { value: 0, label: "Đang Chuẩn Bị" },
         { value: 1, label: "Đang tiến hành" },
         { value: 2, label: "Đã kết thúc" },
-
     ];
     const handleFormSearch = () => {
         formSearch.validateFields().then((value) => {
@@ -122,6 +142,7 @@ const TourOwnerPage = () => {
             GetAllTourByTourOwner(1, value.Keyword, value.startDate, value.endDate)
                 .then((res) => {
                     if (res.succeeded) {
+                        setCurrent(1)
                         setDataSource(res.data)
                         setLoadingData(false)
                         setTotalRecords(res.totalCount)
@@ -194,14 +215,157 @@ const TourOwnerPage = () => {
                 });
         });
     };
+    const handleFormSubmitUpdate = () => {
+        console.log("submit");
+        console.log(filelistUrl);
+        formUpdate.validateFields().then((value) => {
+            const { status, ...updatedValues } = value;
+            updatedValues.images = filelistUrl;
+            updatedValues.id = idTourEdit; // Thêm thuộc tính id vào updatedValues
+            if (updatedValues.endDate && dayjs.isDayjs(updatedValues.endDate)) {
+                updatedValues.endDate = updatedValues.endDate.format("YYYY/MM/DD");
+            }
+            if (updatedValues.lastRegisterDate && dayjs.isDayjs(updatedValues.lastRegisterDate)) {
+                updatedValues.lastRegisterDate = updatedValues.lastRegisterDate.format("YYYY/MM/DD");
+            }
+            if (updatedValues.startDate && dayjs.isDayjs(updatedValues.startDate)) {
+                updatedValues.startDate = updatedValues.startDate.format("YYYY/MM/DD");
+            }
+            if (updatedValues.startDate && dayjs.isDayjs(updatedValues.startDate)) {
+                updatedValues.startDate = updatedValues.startDate.format("YYYY/MM/DD");
+            }
+            if (updatedValues.schedules && Array.isArray(updatedValues.schedules)) {
+                updatedValues.schedules = updatedValues.schedules.map((schedule: schedulesItem) => {
+                    if (schedule.startTime && dayjs.isDayjs(schedule.startTime)) {
+                        return {
+                            ...schedule,
+                            startTime: schedule.startTime.format("HH:mm:ss")
+                        };
+                    }
+                    return schedule;
+                });
+            }
+            console.log(updatedValues);
+            EditTour(updatedValues)
+                .then((res) => {
+                    if (!res.succeeded) {
+                        message.error('Chỉnh sửa thất bại!');
+                        setOpenUpdate(false);
+                        setFileListUrl([]);
+                    } else {
+                        message.success('Chỉnh sửa thành công!');
+                        setOpenUpdate(false);
+                        setFileListUrl([]);
+                        setLoadingData(true);
+                        return GetAllTourByTourOwner();
+                    }
+                })
+                .then((res) => {
+                    if (res && res.succeeded) {
+                        setDataSource(res.data);
+                    }
+                    setLoadingData(false);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    message.error('Có lỗi xảy ra khi chỉnh sửa tour!');
+                    setLoadingData(false);
+                });
+        });
+    }
     const showModal = () => {
         setOpen(true);
+    };
+    const showModalUpdate = (id: string) => {
+        setIdTourEdit(id);
+        GetTourById(id)
+            .then((res) => {
+                if (!res.succeeded) {
+                    console.log(res.messages[0]);
+                }
+                if (res.data != null) {
+                    formUpdate.setFieldValue("description", res.data.description)
+                    formUpdate.setFieldValue("location", res.data.location)
+                    formUpdate.setFieldValue("name", res.data.name)
+                    formUpdate.setFieldValue("hotel", res.data.hotel)
+                    formUpdate.setFieldValue("status", res.data.status)
+                    if (res.data.lastRegisterDate) {
+                        const date = dayjs(res.data.lastRegisterDate);
+                        if (date.isValid()) {
+                            formUpdate.setFieldsValue({
+                                lastRegisterDate: date
+                            });
+                        } else {
+                            console.error("Ngày không hợp lệ:", res.data.lastRegisterDate);
+                        }
+                    }
+                    if (res.data.startDate) {
+                        const date = dayjs(res.data.startDate);
+                        if (date.isValid()) {
+                            formUpdate.setFieldsValue({
+                                startDate: date
+                            });
+                        } else {
+                            console.error("Ngày không hợp lệ:", res.data.startDate);
+                        }
+                    }
+                    if (res.data.endDate) {
+                        const date = dayjs(res.data.endDate);
+                        if (date.isValid()) {
+                            formUpdate.setFieldsValue({
+                                endDate: date
+                            });
+                        } else {
+                            console.error("Ngày không hợp lệ:", res.data.endDate);
+                        }
+                    }
+                    formUpdate.setFieldValue("vehicle", res.data.vehicle)
+                    formUpdate.setFieldValue("price", res.data.price)
+                    formUpdate.setFieldsValue({
+                        schedules: res.data.schedules.map((schedule: ScheduleDisplay) => ({
+                            Date: schedule.date,
+                            startTime: dayjs(schedule.startTime, 'HH:mm:ss'),
+                            Description: schedule.description
+                        }))
+                    });
+                    const fileListData = res.data.images.map((image: fileData) => ({
+                        FilePath: image.filePath
+                    }));
+                    const convertedImages: filePathItem[] = res.data.images.map((image: fileData) => ({
+                        FilePath: image.filePath
+                    }));
+                    formUpdate.setFieldValue("images", convertedImages);
+                    setFileListUrl(fileListData);
+                    setOpenUpdate(true);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                message.error('Có lỗi xảy ra khi lấy thông tin tour!');
+            })
+
+        GetListOrderByTour(id)
+            .then((res) => {
+                if (!res.succeeded) {
+                    console.log(res.messages[0]);
+                }
+                if (res.data != null) {
+                    setListDataOrder(res.data)
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                message.error('Có lỗi xảy ra khi lấy thông tin order!');
+            })
     };
     const handleCancel = () => {
         setOpen(false);
         setFileListUrl([])
     };
-    const [dataSource, setDataSource] = useState<DataType[]>([]);
+    const handleCancelUpdate = () => {
+        setOpenUpdate(false);
+        setFileListUrl([])
+    };
 
     const onPageChange: PaginationProps["onChange"] = (page) => {
         setCurrent(page)
@@ -269,14 +433,35 @@ const TourOwnerPage = () => {
         },
         {
             title: 'Hành động',
-            dataIndex: 'action',
-            render: (id: string) =>
+            dataIndex: 'id',
+            render: (id: string) => (
                 dataSource.length >= 1 ? (
                     <div className="action__table">
-                        <Button icon={<EditFilled />} type="text" onClick={showModal}>
+                        <Button icon={<EditFilled />} type="text" onClick={() => showModalUpdate(id)}>
                         </Button>
                     </div>
-                ) : null,
+                ) : null
+            ),
+        },
+    ];
+    const columnsOrder: TableColumnsType<ListOrderData> = [
+        {
+            title: "Họ và Tên",
+            dataIndex: "name",
+            key: "name",
+            ellipsis: true,
+        },
+        {
+            title: "Số điện thoại",
+            dataIndex: "phoneNumber",
+            key: "hotel",
+            ellipsis: true,
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
+            ellipsis: true,
         },
     ];
     const [filelistUrl, setFileListUrl] = useState<filePathItem[]>([])
@@ -309,13 +494,13 @@ const TourOwnerPage = () => {
         setLoadingData(true)
         GetAllTourByTourOwner(current, searchKeyWord, searchStartDate, searchEndDate)
             .then((res) => {
-                if (res.succeeded) {
+                if (res?.succeeded) {
                     setDataSource(res.data)
                     setTotalRecords(res.totalCount)
                     setLoadingData(false)
                 }
             })
-    }, [current])
+    }, [])
     useEffect(() => {
         GetStatisticOwner()
             .then((res) => {
@@ -436,7 +621,7 @@ const TourOwnerPage = () => {
                             size="large"
                             icon={<PlusOutlined />}
                             style={{ backgroundColor: "#7BBCB0" }}
-                            onClick={showModal}
+                            onClick={() => showModal()}
                         >
                             Thêm Tour
                         </Button>
@@ -705,6 +890,263 @@ const TourOwnerPage = () => {
                         </Col>
                     </Row>
                 </Form>
+            </Modal>
+
+
+
+
+            <Modal
+                title="Thông Tin Chi Tiết"
+                open={openUpdate}
+                onOk={handleFormSubmitUpdate}
+                onCancel={handleCancelUpdate}
+                okText="Lưu Thông Tin"
+                cancelText="Trở về"
+                width={"80%"}
+
+            >
+                <Form
+                    name="updateForm"
+                    autoComplete="off"
+                    className="editTour__form"
+                    layout="vertical"
+                    form={formUpdate}
+                    onFinish={handleFormSubmitUpdate}
+                >
+                    {loadingUploadFile ? (<Spin tip="Loading" size="large"></Spin>) : (
+                        <>
+                            {filelistUrl.length > 0 && (
+
+                                <Row className="formEdit__item" gutter={[16, 0]}>
+                                    <Col span={24} className="formEdit__item-image">
+                                        <Form.Item
+                                            label="Ảnh Tour"
+                                            rules={[validationRulesInstance.requireForm]}
+                                        >
+                                            {filelistUrl?.map((data, key) => (
+                                                <Image
+                                                    key={key}
+                                                    width={100}
+                                                    height={100}
+                                                    src={data.FilePath}
+                                                />
+                                            ))}
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            )}
+                            <Row className="formEdit__item" gutter={[16, 0]}>
+                                <Col span={24}>
+                                    <Form.Item
+                                        name="images"
+                                        rules={[validationRulesInstance.requireForm]}
+                                    >
+                                        <Upload
+                                            action={""}
+                                            listType="picture-card"
+                                            onChange={handleChangeUpload}
+                                        >
+                                            {filelistUrl.length >= 6 ? null : uploadButton}
+                                        </Upload>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </>
+                    )}
+
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={24}>
+                            <Form.Item<TourData> name="description" label="Mô tả" rules={[validationRulesInstance.requireForm]}>
+                                <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={24}>
+                            <Form.Item<TourData>
+                                name="location"
+                                label="Địa điểm"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <Input
+                                    size="large"
+                                    placeholder="Vui lòng nhập địa điểm"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="name"
+                                label="Tên Tour"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <Input
+                                    size="large"
+                                    placeholder="Vui lòng nhập tên của tour"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="hotel"
+                                label="Nơi nghỉ ngơi"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <Input
+                                    size="large"
+                                    placeholder="Vui lòng nhập nơi nghỉ ngơi"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="status"
+                                label="Trạng thái Tour"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <Select
+                                    disabled
+                                    placeholder="Vui lòng nhập trạng thái của tour"
+                                    size="large"
+                                    defaultValue={0}
+                                    options={listStateTour}
+                                />
+
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="lastRegisterDate"
+                                label="Ngày cuối cùng đăng kí"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <DatePicker
+                                    size="large"
+                                    style={{ width: "100%" }}
+                                    placeholder="YYYY/MM/DD"
+                                    format="YYYY/MM/DD"
+                                />
+                            </Form.Item>
+                        </Col>
+
+                    </Row>
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="startDate"
+                                label="Ngày bắt đầu"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <DatePicker
+                                    size="large"
+                                    style={{ width: "100%" }}
+                                    placeholder="YYYY/MM/DD"
+                                    format="YYYY/MM/DD"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="endDate"
+                                label="Ngày kết thúc"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <DatePicker
+                                    size="large"
+                                    style={{ width: "100%" }}
+                                    placeholder="YYYY/MM/DD"
+                                    format="YYYY/MM/DD"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="vehicle"
+                                label="Phương tiện"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <Input
+                                    size="large"
+                                    placeholder="Vui lòng nhập phương tiện di chuyển"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item<TourData>
+                                name="price"
+                                label="Giá tiền"
+                                rules={[validationRulesInstance.requireForm, validationRulesInstance.acceptNumbersOnly]}
+                            >
+                                <Input size="large" placeholder="Vui lòng nhập giá tiền" prefix={<span className="prefix__number-title">VNĐ</span>} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row className="formEdit__item" gutter={[16, 0]}>
+                        <Col span={24}>
+                            <Form.Item
+                                label="Chi tiết chuyến đi"
+                                rules={[validationRulesInstance.requireForm]}
+                            >
+                                <Form.List name="schedules">
+                                    {(fields, { add, remove }) => (
+                                        <>
+                                            {fields.map(({ key, name, ...restField }) => (
+                                                <Row key={key} gutter={[16, 16]} style={{ marginBottom: "16px" }}>
+                                                    <Col span={6}>
+                                                        <Form.Item noStyle name={[name, 'Date']}  {...restField} rules={[validationRulesInstance.requireForm, validationRulesInstance.acceptNumbersOnly]}>
+                                                            <Input size="large" placeholder="Vui lòng ngày" prefix={<span className="prefix__number-title">Ngày</span>} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Col span={6}>
+                                                        <Form.Item noStyle name={[name, 'startTime']} rules={[validationRulesInstance.requireForm]}>
+                                                            <TimePicker size="large" style={{ width: '100%' }} placeholder="Chọn thời gian" format={"HH:mm"} />
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <Col span={6}>
+                                                        <Form.Item noStyle name={[name, 'Description']} rules={[validationRulesInstance.requireForm]}>
+                                                            <Input placeholder="Mô tả" size="large" />
+                                                        </Form.Item>
+                                                    </Col>
+                                                    <CloseOutlined
+                                                        onClick={() => {
+                                                            remove(name);
+                                                        }}
+                                                    />
+                                                </Row>
+                                            ))}
+                                            <Form.Item>
+                                                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                                                    Thêm thời gian chi tiết
+
+                                                </Button>
+                                            </Form.Item>
+                                        </>
+                                    )}
+                                </Form.List>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+                <Table
+                    columns={columnsOrder}
+                    dataSource={listDataOrder}
+                    locale={{
+                        emptyText: () => (
+                            <div className="emptyBlank">
+                                <ImgEmpty></ImgEmpty>
+                                <span className="emptyBlank__title">
+                                    There are no records to display.
+                                </span>
+                            </div>
+                        ),
+                    }}
+                />
             </Modal>
         </div>
     )

@@ -10,6 +10,7 @@ import LocationInfoPage from "./pages/LocationInfo-page.tsx";
 import TourOwnerPage from "./pages/TourOwner-page.tsx";
 import StatisticAdminPage from "./pages/StatisticAdmin-page.tsx";
 import StatisticOwnerAdmin from "./pages/StatisticOwnerAdmin.tsx";
+import BookingDetailPage from "./pages/BookingDetail-page.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // import {Provider} from "react-redux"
 // import {store} from "@/lib/redux/store"
@@ -103,6 +104,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute role={["Customer"]}>
             <BookingPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "booking/:id",
+        element: (
+          <ProtectedRoute role={["Customer"]}>
+            <BookingDetailPage />
           </ProtectedRoute>
         ),
       },
