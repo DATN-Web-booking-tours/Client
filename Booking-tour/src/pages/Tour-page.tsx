@@ -1,15 +1,14 @@
 import {
   Input,
   Form,
-  Select,
   Button,
   DatePicker,
   Row,
   Col,
-  Checkbox,
-  InputNumber,
   List,
   Tag,
+  PaginationProps,
+  Spin,
 } from "antd";
 import {
   EnvironmentFilled,
@@ -20,139 +19,95 @@ import {
   ClockCircleFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-interface OptionType {
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { GetAllByAll } from "@/lib/api/tour-api";
+interface OptionStateTour {
+  value: number;
   label: string;
-  value: string;
 }
-interface dataTourType {
-  status: string;
-  activity: string;
-  date: string;
-  price: string;
+interface filePathItem {
+  filePath: string;
+  fileUrl: string;
+}
+interface DataType {
+  id: string;
+  name: string;
+  price: number;
   location: string;
-  img: string;
-  typeRest: string;
+  hotel: string;
   description: string;
+  startDate: string;
+  status: number;
+  image: filePathItem;
+  createdAt: string;
 }
 const TourPage = () => {
-  const { RangePicker } = DatePicker;
-  const activity: OptionType[] = [
-    { label: "Tham quan", value: "Visit" },
-    { label: "Leo núi", value: "RockClimbing" },
-    { label: "Cắm trại", value: "Camping" },
-    { label: "Nghỉ dưỡng", value: "GoOnHoliday" },
-  ];
-  const rest: OptionType[] = [
-    { label: "Khách sạn", value: "Hotel" },
-    { label: "Homestay", value: "Homestay" },
-    { label: "Resort", value: "Resort" },
-    { label: "Villa", value: "Villa" },
-  ];
-  const tourBestData: dataTourType[] = [
-    {
-      status: "Chưa bắt đầu",
-      typeRest: "Hotel",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Tham Quan",
-      date: "July 05,2024",
-      price: "500,000",
-      location: "Hồ Chí Minh",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2019/03/13/1552466374013-a57dacdbc92a9c508c1dbc4c4ceeb5cd.jpeg?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Chưa bắt đầu",
+  const [formSearchTour] = Form.useForm();
+  const [totalRecords, setTotalRecords] = useState<number>(0);
+  const [current, setCurrent] = useState<number>(1);
+  const [loadingData, setLoadingData] = useState<boolean>(false)
+  const [searchKeyWord, setSearchKeyWord] = useState<string>();
+  const [searchStartDate, setSearchStartDate] = useState<string>();
+  const [searchEndDate, setSearchEndDate] = useState<string>();
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
+  const onPageChange: PaginationProps["onChange"] = (page) => {
+    setCurrent(page)
+  }
+  const handleFormSearch = () => {
+    formSearchTour.validateFields().then((value) => {
+      if (value.startDate && dayjs.isDayjs(value.startDate)) {
+        value.startDate = value.startDate.format("YYYY/MM/DD");
+      }
+      if (value.endDate && dayjs.isDayjs(value.endDate)) {
+        value.endDate = value.endDate.format("YYYY/MM/DD");
+      }
+      setSearchKeyWord(value.Keyword)
+      setSearchStartDate(value.startDate)
+      setSearchEndDate(value.endDate)
+      setLoadingData(true)
+      GetAllByAll(1, value.Keyword, value.startDate, value.endDate)
+        .then((res) => {
+          if (res?.succeeded) {
+            setDataSource(res.data)
+            setLoadingData(false)
+            setTotalRecords(res.totalCount)
+          }
+        })
+    });
+  };
+  const listStateTour: OptionStateTour[] = [
+    { value: 0, label: "Đang Chuẩn Bị" },
+    { value: 1, label: "Đang tiến hành" },
+    { value: 2, label: "Đã kết thúc" },
 
-      typeRest: "Lều",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Leo núi",
-      date: "Jun 21,2024",
-      price: "1,200,000",
-      location: "Nha Trang",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851600794-f02453e5e7d6bc0533503519b44bd817.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Đã kết thúc",
-      typeRest: "Resort",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Nghỉ dưỡng",
-      date: "May 20,2024",
-      price: "300,000",
-      location: "Đà Nẵng",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851894841-e5d7f8e7abc30ff0f1f07f6d7a64eac1.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Đã kết thúc",
-      typeRest: "Hotel",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Chưa bắt đầu",
-
-      typeRest: "Hotel",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Đã hủy",
-      typeRest: "Hotel",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Chưa bắt đầu",
-      typeRest: "Hotel",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
-    },
-    {
-      status: "Đã kết thúc",
-      typeRest: "Hotel",
-      description:
-        "Tour du lịch Hà Nội mang đến trải nghiệm tuyệt vời với những danh thắng lịch sử, văn hóa độc đáo như Hồ Gươm, Lăng Bác, Phố cổ và ẩm thực phong phú. Khám phá vẻ đẹp cổ kính và hiện đại của thủ đô Việt Nam",
-      activity: "Cắm trại",
-      date: "Oct 10,2024",
-      price: "700,000",
-      location: "Hà Nội",
-      img: "https://ik.imagekit.io/tvlk/image/imageResource/2021/11/25/1637851505067-e5745050cc951e5c9c11b01c1d0ff920.png?tr=dpr-2,q-75,w-320",
-    },
   ];
+  useEffect(() => {
+    setLoadingData(true)
+    GetAllByAll(current, searchKeyWord, searchStartDate, searchEndDate)
+      .then((res) => {
+        if (res?.succeeded) {
+          setDataSource(res.data)
+          setTotalRecords(res.totalCount)
+          setLoadingData(false)
+        }
+      })
+  }, [current])
   return (
     <div className="searchTour">
       <Form
         name="SearchForm"
+        form={formSearchTour}
         autoComplete="off"
         className="searchTour__form"
         layout="vertical"
+        onFinish={handleFormSearch}
       >
         <div className="search__form">
-          <Form.Item noStyle name="location">
+          <Form.Item noStyle name="Keyword">
             <Input
               size="large"
-              placeholder="Nhập địa điểm du lịch"
+              placeholder="Nhập tên,địa điểm du lịch"
               prefix={<EnvironmentFilled />}
               style={{
                 borderColor: "#79747E",
@@ -161,33 +116,36 @@ const TourPage = () => {
               }}
             />
           </Form.Item>
-          <Form.Item noStyle name="duration">
-            <RangePicker
+          <Form.Item noStyle name="startDate">
+            <DatePicker
               suffixIcon={<CalendarFilled style={{ color: "#112211" }} />}
+              placeholder="Nhập ngày bắt đầu"
               size="large"
               style={{
                 borderColor: "#79747E",
                 maxWidth: "300px",
                 minWidth: "200px",
               }}
+              format={"YYYY/MM/DD"}
             />
           </Form.Item>
-          <Form.Item noStyle name="activity">
-            <Select
+          <Form.Item noStyle name="endDate">
+            <DatePicker
+              suffixIcon={<CalendarFilled style={{ color: "#112211" }} />}
+              placeholder="Nhập ngày kết thúc"
               size="large"
-              allowClear
-              options={activity}
-              placeholder="Chọn loại hình du lịch"
-              className="select__form"
               style={{
+                borderColor: "#79747E",
                 maxWidth: "300px",
                 minWidth: "200px",
               }}
+              format={"YYYY/MM/DD"}
             />
           </Form.Item>
-          <Form.Item noStyle name="activity">
+          <Form.Item noStyle>
             <Button
               type="primary"
+              htmlType="submit"
               size="large"
               icon={<SearchOutlined />}
               style={{ backgroundColor: "#01b7f2" }}
@@ -197,128 +155,96 @@ const TourPage = () => {
           </Form.Item>
         </div>
         <Row className="search__filter">
-          <Col span={6}>
-            <Form.Item name="activityGroup" label="Loại hình">
-              <Checkbox.Group>
-                <Row gutter={[0, 12]}>
-                  {activity.map((data, key) => (
-                    <Col span={24} key={key}>
-                      <Checkbox value={data.value}>{data.label}</Checkbox>
-                    </Col>
-                  ))}
-                </Row>
-              </Checkbox.Group>
-            </Form.Item>
-            <Form.Item name="Budget" label="Giá tối đa">
-              <InputNumber<number>
-                style={{ width: "70%" }}
-                formatter={(value) =>
-                  `VND ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => {
-                  const numericValue = value?.replace(/[^\d]/g, "");
-                  return numericValue ? parseInt(numericValue, 10) : 0;
+          {loadingData ? (<Spin tip="Loading" size="large"></Spin>) : (
+            <Col span={24}>
+              <List
+                itemLayout="vertical"
+                bordered
+                size="large"
+                pagination={{
+                  onChange: onPageChange,
+                  total: totalRecords,
+                  current: current,
                 }}
-              />
-            </Form.Item>
-            <Form.Item name="typeRest" label="Loại hình nghỉ ngơi">
-              <Checkbox.Group>
-                <Row gutter={[0, 12]}>
-                  {rest.map((data, key) => (
-                    <Col span={24} key={key}>
-                      <Checkbox value={data.value}>{data.label}</Checkbox>
-                    </Col>
-                  ))}
-                </Row>
-              </Checkbox.Group>
-            </Form.Item>
-          </Col>
-          <Col span={18}>
-            <List
-              itemLayout="vertical"
-              bordered
-              size="large"
-              pagination={{
-                pageSize: 8,
-              }}
-              dataSource={tourBestData}
-              renderItem={(item, key) => (
-                <List.Item
-                  key={key}
-                  extra={
-                    <div>
-                      <div className="containerRow__itemTour">
-                        <Row>
-                          <Col className="item__tourInfo" span={24}>
-                            <Tag color="#f50" style={{ marginRight: 0 }}>
-                              VND {item.price}
-                            </Tag>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col className="item__tourInfo text__tour" span={24}>
-                            <EnvironmentFilled /> {item.location}
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col className="item__tourInfo text__tour" span={24}>
-                            <HomeFilled /> {item.typeRest}
-                          </Col>
-                        </Row>
+                dataSource={dataSource}
+                renderItem={(item, key) => (
+                  <List.Item
+                    key={key}
+                    extra={
+                      <div>
+                        <div className="containerRow__itemTour">
+                          <Row>
+                            <Col className="item__tourInfo" span={24}>
+                              <Tag color="#f50" style={{ marginRight: 0 }}>
+                                VND {item?.price}
+                              </Tag>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col className="item__tourInfo text__tour" span={24}>
+                              <EnvironmentFilled /> {item?.location}
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col className="item__tourInfo text__tour" span={24}>
+                              <HomeFilled /> {item?.hotel}
+                            </Col>
+                          </Row>
+                        </div>
+                        <Link to={`${item?.id}`}>
+                          <Button
+                            type="primary"
+                            size="large"
+                            icon={<DollarTwoTone />}
+                            style={{ backgroundColor: "#01b7f2" }}
+                          >
+                            Xem thông tin
+                          </Button>
+                        </Link>
                       </div>
-                      <Link to={`/tour/${123}`}>
-                        <Button
-                          type="primary"
-                          size="large"
-                          icon={<DollarTwoTone />}
-                          style={{ backgroundColor: "#01b7f2" }}
+                    }
+                  >
+                    <List.Item.Meta
+                      avatar={
+                        <img
+                          width={150}
+                          alt="logo"
+                          style={{ borderRadius: "16px" }}
+                          src={item?.image?.filePath}
+                        />
+                      }
+                      title={
+                        <Link
+                          to={`${item?.id}`}
+                          style={{
+                            fontSize: "20px",
+                            fontWeight: 500,
+                            color: "#000000",
+                          }}
                         >
-                          Xem thông tin
-                        </Button>
-                      </Link>
-                    </div>
-                  }
-                >
-                  <List.Item.Meta
-                    avatar={
-                      <img
-                        width={150}
-                        alt="logo"
-                        style={{ borderRadius: "16px" }}
-                        src={item.img}
-                      />
-                    }
-                    title={
-                      <Link
-                        to={"id"}
-                        style={{
-                          fontSize: "20px",
-                          fontWeight: 500,
-                          color: "#000000",
-                        }}
-                      >
-                        {item.activity}
-                      </Link>
-                    }
-                    description={
-                      <>
-                        <Row>{item.description}</Row>
-                        <Row style={{ paddingTop: "16px" }}>
-                          <ClockCircleFilled />
-                          <span className="list__itemTour-date">
-                            {item.date}
-                          </span>
-                          <Tag color="#7BBCB0" style={{ marginRight: 0 }}>
-                            {item.status}
-                          </Tag>
-                        </Row>
-                      </>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </Col>
+                          {item?.name}
+                        </Link>
+                      }
+                      description={
+                        <>
+                          <Row>{item?.description}</Row>
+                          <Row style={{ paddingTop: "16px" }}>
+                            <ClockCircleFilled />
+                            <span className="list__itemTour-date">
+                              {dayjs(item?.startDate).format('MMMM DD, YYYY')}
+                            </span>
+                            <Tag color="#7BBCB0" style={{ marginRight: 0 }}>
+                              {listStateTour[item.status].label}
+                            </Tag>
+                          </Row>
+                        </>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            </Col>
+          )}
         </Row>
       </Form>
     </div>

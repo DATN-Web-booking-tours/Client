@@ -1,4 +1,4 @@
-import React from "react";
+
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import HomePage from "@/pages/Home-page.tsx";
@@ -10,6 +10,7 @@ import LocationInfoPage from "./pages/LocationInfo-page.tsx";
 import TourOwnerPage from "./pages/TourOwner-page.tsx";
 import StatisticAdminPage from "./pages/StatisticAdmin-page.tsx";
 import StatisticOwnerAdmin from "./pages/StatisticOwnerAdmin.tsx";
+import BookingDetailPage from "./pages/BookingDetail-page.tsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 // import {Provider} from "react-redux"
 // import {store} from "@/lib/redux/store"
@@ -21,6 +22,9 @@ import {
 import NotFoundPage from "./pages/NotFound-page.tsx";
 import TourPage from "./pages/Tour-page.tsx";
 import TourDetailPage from "./pages/TourDetail-page.tsx";
+import { UserContextProvider } from "./contexts/UserContext.tsx";
+import ProtectedRoute from "./components/shared/ProtectedRoute.tsx";
+
 
 const router = createBrowserRouter([
   {
@@ -61,15 +65,27 @@ const router = createBrowserRouter([
       },
       {
         path: "tourowner",
-        element: <TourOwnerPage />,
+        element: (
+          <ProtectedRoute role={["Tour owner"]}>
+            <TourOwnerPage />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: "statistic",
-        element: <StatisticAdminPage />,
+        path: "statisticuser",
+        element: (
+          <ProtectedRoute role={["superadmin"]}>
+            <StatisticAdminPage />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: "statisticowner",
-        element: <StatisticOwnerAdmin />,
+        path: "statistictourowner",
+        element: (
+          <ProtectedRoute role={["superadmin"]}>
+            <StatisticOwnerAdmin />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "home/:id",
@@ -77,25 +93,40 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <ProtectedRoute role={["superadmin", "Customer", "Tour owner"]}>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "booking",
-        element: <BookingPage />,
+        element: (
+          <ProtectedRoute role={["Customer"]}>
+            <BookingPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "booking/:id",
+        element: (
+          <ProtectedRoute role={["Customer"]}>
+            <BookingDetailPage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
 ]);
-const clientID =
-  "74177461559-lo3iv873kif2fr5tbc67vdnqk7on02j9.apps.googleusercontent.com";
+const clientID = "74177461559-lo3iv873kif2fr5tbc67vdnqk7on02j9.apps.googleusercontent.com";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <GoogleOAuthProvider clientId={clientID}>
-    <React.StrictMode>
+    <UserContextProvider>
       <RouterProvider router={router}></RouterProvider>
-      {/* <App /> */}
-      {/* <Provider store={store}> */}
+    </UserContextProvider>
+    {/* <App /> */}
+    {/* <Provider store={store}> */}
 
-      {/* </Provider> */}
-    </React.StrictMode>
+    {/* </Provider> */}
   </GoogleOAuthProvider>
 );

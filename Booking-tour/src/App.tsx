@@ -1,9 +1,17 @@
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import { Outlet } from "react-router-dom";
-import { FloatButton } from "antd";
+import { Divider, FloatButton, Popover } from "antd";
 import { MessageTwoTone } from "@ant-design/icons";
+import { useState } from "react";
+import Chatbot from "./components/shared/Chatbot";
 function App() {
+  const [open, setOpen] = useState(false);
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+  };
+
   return (
     <>
       <div className="row">
@@ -19,14 +27,25 @@ function App() {
           <Footer />
         </div>
       </div>
-      <FloatButton
-        shape="circle"
-        type="primary"
-        badge={{ count: 1 }}
-        tooltip={<div>Chat Bot</div>}
-        style={{ right: 94, bottom: 200 }}
-        icon={<MessageTwoTone />}
-      />
+
+      <Popover
+        content={<Chatbot />}
+        title={<><div className="chatbot__title">Hỗ trợ 24/7</div><Divider style={{ margin: "12px 0px 12px 0px" }} /></>}
+        trigger="click"
+        open={open}
+        placement="leftTop"
+        onOpenChange={handleOpenChange}
+      >
+        <FloatButton
+          shape="circle"
+          type="primary"
+          badge={{ count: 1 }}
+          tooltip={<div>Chat Bot</div>}
+          style={{ right: 20, bottom: 50 }}
+          icon={<MessageTwoTone />}
+        />
+      </Popover>
+
     </>
   );
 }
